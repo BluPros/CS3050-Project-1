@@ -1,0 +1,9 @@
+# Large Steam datasets: never commit them
+games.csv
+*.csv
+
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+venv/
