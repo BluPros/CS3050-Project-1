@@ -11,7 +11,7 @@ import sqlite3
 
 # index_col=False prevents pandas from treating AppID as an index
 df = pd.read_csv(
-    r"..\games.csv",
+    "C:\\Users\\blupr\\Downloads\\CS3050\\CS3050-Project-1\\games.csv",
     index_col=False
 )
 
@@ -20,7 +20,7 @@ columns_to_keep = [
     "Name",
     "Release date",
     "Price",
-    "User score",
+    "Metacritic url",
     "Categories",
     "Genres",
     "Tags"
@@ -33,31 +33,26 @@ df = df.rename(columns={
     "Name": "name",
     "Release date": "release_date",
     "Price": "price",
-    "User score": "user_score",
+    "Metacritic url": "metacritic_url",
     "Categories": "categories",
     "Genres": "genres",
     "Tags": "tags"
 })
 
-# Remove fully duplicate records
 df = df.drop_duplicates(subset="app_id", keep="first")
 
-# Remove rows missing a game name
 df["name"] = df["name"].astype("string").str.strip()
 df = df.dropna(subset=["name"])
 df = df[df["name"] != ""]
 
-# Remove rows with no user score
-df = df[df["user_score"].notna()]
-
-# Optional: make user_score numeric afterward
-df["user_score"] = pd.to_numeric(
-    df["user_score"],
+df["release_date"] = pd.to_datetime(
+    df["release_date"],
     errors="coerce"
 )
 
-df.to_csv("steam_games_cleaned.csv", index=False)
+five_years_ago = pd.Timestamp("2021-09-12")
+df = df[df["release_date"] >= five_years_ago]
 
-print(df["user_score"].head(20))
-print(df["user_score"].value_counts(dropna=False).head(20))
-print(df["user_score"].dtype)
+df = df[df["metacritic_url"].notna()]
+
+df.to_csv("steam_games_cleaned.csv", index=False)
