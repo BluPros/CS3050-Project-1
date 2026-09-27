@@ -5,13 +5,12 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from consts import CREDS_FILE
+
 class FirebaseConnector:
 
-    COLLECTION_NAME = "games"
-    CREDS_FILE = "steam-search-adminkey.json"
-
     def __init__(self):
-        cred = credentials.Certificate(self.CREDS_FILE)
+        cred = credentials.Certificate(CREDS_FILE)
 
         firebase_admin.initialize_app(cred)
 
