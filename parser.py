@@ -38,10 +38,9 @@ def parse(query_string: str):
         Literal("name") |
         Literal("release_date") |
         Literal("price") |
+        Literal("has_metracritic") |
         Literal("metacritic_url") |
-        Literal("categories") |
-        Literal("genres") |
-        Literal("tags")
+        Literal("genre")
     )
 
     value = Word(printables)
@@ -51,6 +50,10 @@ def parse(query_string: str):
     query = condition("condition1") + condition2 + pp.StringEnd()
     try:
         result = query.parse_string(query_string)
+
+        if result["condition2"]["operator"] == "=":  # turn single equals into double
+            result["condition2"]["operator"] = "=="
+
         parsed_result = {
             "condition1": {
                 "field": result["condition1"]["field"],
@@ -65,6 +68,9 @@ def parse(query_string: str):
                 parsed_result["logic_op"] = result["logic_op"]
             else: # makes the dict return an and even if implied and was used
                 parsed_result["logic_op"] = "and"
+
+            if result["condition2"]["operator"] == "=":# turn single equals into double
+                result["condition2"]["operator"] = "=="
 
             parsed_result["condition2"] = {
                 "field": result["condition2"]["field"],
