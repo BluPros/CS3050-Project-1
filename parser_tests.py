@@ -105,14 +105,17 @@ def test_double_equals():
     print(result2)
     assert result1["condition1"]["field"] == result2["condition1"]["field"]
 
-def test_del():
-    result = parse("tag=guilty_gear_strive")
-    assert result["condition1"]["field"] == "tags"
-
-
-def test_non_plural():
+def test_tag_vs_tags():
     result1 = parse("tag=guilty_gear_strive")
     result2 = parse("tags=guilty_gear_strive")
-    print(result1["condition1"]["field"])
-    print(result2["condition1"]["field"])
-    #assert result1["condition1"]["field"] == result2["condition1"]["field"]
+    assert result1["condition1"]["field"] == result2["condition1"]["field"]
+
+def test_category_vs_categories():
+    result1 = parse("category=guilty_gear_strive")
+    result2 = parse("categories=guilty_gear_strive")
+    assert result1["condition1"]["field"] == result2["condition1"]["field"]
+
+def test_genre_vs_genres():
+    result1 = parse("genre=guilty_gear_strive")
+    result2 = parse("genres=guilty_gear_strive")
+    assert result1["condition1"]["field"] == result2["condition1"]["field"]

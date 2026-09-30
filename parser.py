@@ -4,6 +4,21 @@ from firebase_admin import firestore
 import pyparsing as pp
 from pyparsing import Keyword, Literal, Optional, Word, printables, ParseException, Group
 
+def clean_up_syntax(dictionary):
+    if dictionary["operator"] == "=":  # turn single equals into double
+        dictionary["operator"] = "=="
+
+    if dictionary["field"] == "tag":
+        dictionary["field"] = "tags"
+
+    if dictionary["field"] == "category":
+        dictionary["field"] = "categories"
+
+    if dictionary["field"] == "genre":
+        dictionary["field"] = "genres"
+
+    return dictionary
+
 
 # The parser takes a string and returns a dictionary of strings with the following form:
 # {'condition1': {'field': (field), 'operator': (operator), 'value': (value)}, 'logic_op': None, 'condition2' : None}
@@ -56,12 +71,7 @@ def parse(query_string: str):
     try:
         result = query.parse_string(query_string)
 
-        if result["condition1"]["operator"] == "=":  # turn single equals into double
-            result["condition1"]["operator"] = "=="
-
-        if result["condition1"]["field"] == "tag":
-            result["condition1"]["field"] = "tags"
-
+        result["condition1"] = clean_up_syntax(result["condition1"])
         parsed_result = {
             "condition1": {
                 "field": result["condition1"]["field"],
@@ -77,8 +87,7 @@ def parse(query_string: str):
             else: # makes the dict return an and even if implied and was used
                 parsed_result["logic_op"] = "and"
 
-            if result["condition2"]["operator"] == "=":# turn single equals into double
-                result["condition2"]["operator"] = "=="
+            result["condition2"] = clean_up_syntax(result["condition2"])
 
             parsed_result["condition2"] = {
                 "field": result["condition2"]["field"],
