@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import pyparsing as pp
-from pyparsing import Keyword, Literal, Optional, Word, alphas, alphanums, pyparsing_common, ParseException, Group
+from pyparsing import Keyword, Literal, Optional, Word, printables, ParseException, Group
 
 
 # The parser takes a string and returns a dictionary of strings with the following form:
@@ -44,7 +44,7 @@ def parse(query_string: str):
         Literal("tags")
     )
 
-    value = Word(alphanums + '.' + '/' + '-')
+    value = Word(printables)
     condition = Group(field("field") + comparison_op("operator") + value("value"))
     condition2 = Optional(Optional(or_op | and_op)("logic_op") + condition("condition2"))
 
@@ -55,7 +55,7 @@ def parse(query_string: str):
             "condition1": {
                 "field": result["condition1"]["field"],
                 "operator": result["condition1"]["operator"],
-                "value": result["condition1"]["value"]
+                "value": result["condition1"]["value"].replace("_", " ")
             },
             "logic_op": None,
             "condition2": None
@@ -69,7 +69,7 @@ def parse(query_string: str):
             parsed_result["condition2"] = {
                 "field": result["condition2"]["field"],
                 "operator": result["condition2"]["operator"],
-                "value": result["condition2"]["value"]
+                "value": result["condition2"]["value"].replace("_", " ")
             }
 
         return parsed_result

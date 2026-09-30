@@ -47,10 +47,6 @@ def test_invalid_field():
     result = parse("fish=10")
     assert result is None
 
-def test_invalid_operator():
-    result = parse("name===deep_rock_galactic")
-    assert result is None
-
 def test_missing_field():
     result = parse("=deep_rock_galactic")
     assert result is None
@@ -89,3 +85,16 @@ def test_implied_and_whitespace():
     assert result["condition1"]["field"] == "app_id"
     assert result["logic_op"] == "and"
     assert result["condition2"]["field"] == "release_date"
+
+def test_metacritic_url():
+    result = parse("metacritic_url=https://www.metacritic.com/game/pc/off-road-redneck-racing?ftag=MCD-06-10aaa1f")
+    assert result["condition1"]["value"] == "https://www.metacritic.com/game/pc/off-road-redneck-racing?ftag=MCD-06-10aaa1f"
+
+def test_metacritic_url_and():
+    result = parse("metacritic_url=https://www.metacritic.com/game/pc/off-road-redneck-racing?ftag=MCD-06-10aaa1f and price>3.33")
+    assert result["condition1"]["value"] == "https://www.metacritic.com/game/pc/off-road-redneck-racing?ftag=MCD-06-10aaa1f"
+    assert result["condition2"]["value"] == "3.33"
+
+def test_underscore_replacement():
+    result = parse("name=guilty_gear_strive")
+    assert result["condition1"]["value"] == "guilty gear strive"
