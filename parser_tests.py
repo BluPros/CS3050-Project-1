@@ -99,10 +99,20 @@ def test_underscore_replacement():
     result = parse("name=guilty_gear_strive")
     assert result["condition1"]["value"] == "guilty gear strive"
 
-"""
+def test_double_equals():
+    result1 = parse("tag=guilty_gear_strive")
+    result2 = parse("tag==guilty_gear_strive")
+    print(result2)
+    assert result1["condition1"]["field"] == result2["condition1"]["field"]
+
+def test_del():
+    result = parse("tag=guilty_gear_strive")
+    assert result["condition1"]["field"] == "tags"
+
+
 def test_non_plural():
     result1 = parse("tag=guilty_gear_strive")
     result2 = parse("tags=guilty_gear_strive")
-    print(result2)
-    assert result1["condition1"]["field"] == result2["condition1"]["field"]
-"""
+    print(result1["condition1"]["field"])
+    print(result2["condition1"]["field"])
+    #assert result1["condition1"]["field"] == result2["condition1"]["field"]
