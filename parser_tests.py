@@ -10,7 +10,7 @@ def test_single_condition_with_number():
 def test_single_condition_with_string():
     result = parse("name=fortnite")
     assert result["condition1"]["field"] == "name"
-    assert result["condition1"]["operator"] == "="
+    assert result["condition1"]["operator"] == "=="
     assert result["condition1"]["value"] == "fortnite"
 
 def test_implied_and():
@@ -70,13 +70,13 @@ def test_improper_case():
 def test_leading_whitespace():
     result = parse("     name=fortnite")
     assert result["condition1"]["field"] == "name"
-    assert result["condition1"]["operator"] == "="
+    assert result["condition1"]["operator"] == "=="
     assert result["condition1"]["value"] == "fortnite"
 
 def test_trailing_whitespace():
     result = parse("name=fortnite                ")
     assert result["condition1"]["field"] == "name"
-    assert result["condition1"]["operator"] == "="
+    assert result["condition1"]["operator"] == "=="
     assert result["condition1"]["value"] == "fortnite"
 
 def test_implied_and_whitespace():
@@ -98,3 +98,11 @@ def test_metacritic_url_and():
 def test_underscore_replacement():
     result = parse("name=guilty_gear_strive")
     assert result["condition1"]["value"] == "guilty gear strive"
+
+"""
+def test_non_plural():
+    result1 = parse("tag=guilty_gear_strive")
+    result2 = parse("tags=guilty_gear_strive")
+    print(result2)
+    assert result1["condition1"]["field"] == result2["condition1"]["field"]
+"""

@@ -40,7 +40,12 @@ def parse(query_string: str):
         Literal("price") |
         Literal("has_metracritic") |
         Literal("metacritic_url") |
-        Literal("genre")
+        Literal("genre") |
+        Literal("genres") |
+        Literal("category") |
+        Literal("categories") |
+        Literal("tag") |
+        Literal("tags")
     )
 
     value = Word(printables)
@@ -51,8 +56,16 @@ def parse(query_string: str):
     try:
         result = query.parse_string(query_string)
 
-        if result["condition2"]["operator"] == "=":  # turn single equals into double
-            result["condition2"]["operator"] = "=="
+
+
+        if result["condition1"]["operator"] == "=":  # turn single equals into double
+            result["condition1"]["operator"] = "=="
+
+        if result["condition1"]["field"] == "genre":
+            result["condition1"]["field"] = "genres"
+
+        if result["condition1"]["field"] == "genre":
+            result["condition1"]["field"] = "genres"
 
         parsed_result = {
             "condition1": {
