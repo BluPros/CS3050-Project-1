@@ -45,7 +45,8 @@ def parse(query_string: str):
         Literal("!=") |
         Literal(">") |
         Literal("<") |
-        Literal("=")
+        Literal("=") |
+        Literal("==")
     )
 
     field = (
