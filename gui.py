@@ -4,6 +4,8 @@ import tkinter as tk
 
 from connector import FirebaseConnector
 from tkinter import ttk
+from parser import parse
+import steam_game
 
 # steam-style color palette
 BG_COLOR = "#171D29"
@@ -329,30 +331,20 @@ def open_help_window(root):
     )
 
 
-# collect query from textbox
-# send query to parser
-# display results?
+"""Collect query from search box, pass to parser and model class, 
+    display results to results box"""
 def get_and_process_query(query_entry, results_box, db):
-    # call parser
-    # call do query
-    # call display results? or do it here
+    query = query_entry.get().strip()
 
-    ## query = query_entry.get().strip()
-    ## parsed_q = parse_query(query)
+    parsed_q = parse(query)
+    results = steam_game.do_query(parsed_q, db)
 
-    ## do_query(db, parsed_q) --- must return whether query is okay?
-    ## query_check, results = do_query(^)
-    ## if(query_check):
-    ##      display_results(results_box, results)
-    ## else:
-    ##      bad_query(results_box)
+    # parser checks if query is valid, returns None if not
+    if parsed_q == None:
+        bad_query(results_box)
+    else:
+        display_results(results_box, results)
 
-    #results = {"key": "value",
-     #            "key2": "value"}
-    #isplay_results(results_box, results)
-     #!!!!strings display test passed
-     #!!!! dictionary works but brackets print
-    pass
 
 """Display text in the read-only results box."""
 def display_results(results_box, text):
