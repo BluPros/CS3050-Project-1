@@ -38,8 +38,8 @@ class SteamGame:
         """
         cls.validate_query(parsed_query)
 
-        first_condition = parsed_query["first_condition"]
-        second_condition = parsed_query.get("second_condition")
+        first_condition = parsed_query["condition1"]
+        second_condition = parsed_query.get("condition2")
         joiner = parsed_query.get("joiner")
 
         first_value = cls.convert_value(
@@ -99,10 +99,10 @@ class SteamGame:
 
         valid_operators = {"==", "<", "<=", ">", ">="}
 
-        conditions = [parsed_query["first_condition"]]
+        conditions = [parsed_query["condition1"]]
 
-        if parsed_query.get("second_condition") is not None:
-            conditions.append(parsed_query["second_condition"])
+        if parsed_query.get("condition2") is not None:
+            conditions.append(parsed_query["condition2"])
 
         for condition in conditions:
             field = condition["field"]

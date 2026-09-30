@@ -5,7 +5,7 @@ import tkinter as tk
 from connector import FirebaseConnector
 from tkinter import ttk
 from parser import parse
-import steam_game
+from steam_game import SteamGame
 
 # steam-style color palette
 BG_COLOR = "#171D29"
@@ -30,8 +30,8 @@ INPUT_FONT = (FONT_FAMILY, 12)
 returns a ready-to-use version"""
 def get_FB_instance():
     connector = FirebaseConnector()
-    db = connector.get_database()
-    return db
+    #db = connector.get_database()
+    return connector
 
 """Sets up the main window itsself so widgets can be added."""
 def create_window():
@@ -72,7 +72,7 @@ def configure_scrollbar_style():
     )
 
 """Sets up the main window and widgets of the GUI"""
-def create_widgets(root, db):
+def create_widgets(root, connector):
     # title
     title_label = tk.Label(
         root,
@@ -178,7 +178,7 @@ def create_widgets(root, db):
     search_button = tk.Button(
         root,
         text="Search",
-        command=lambda: get_and_process_query(query_entry, results_box, db),
+        command=lambda: get_and_process_query(query_entry, results_box, connector),
         font=BUTTON_FONT,
         bg=ACCENT_COLOR,
         fg=BG_COLOR,
@@ -333,11 +333,11 @@ def open_help_window(root):
 
 """Collect query from search box, pass to parser and model class, 
     display results to results box"""
-def get_and_process_query(query_entry, results_box, db):
+def get_and_process_query(query_entry, results_box, connector):
     query = query_entry.get().strip()
 
     parsed_q = parse(query)
-    results = steam_game.do_query(parsed_q, db)
+    results = SteamGame.do_query(parsed_q, connector)
 
     # parser checks if query is valid, returns None if not
     if parsed_q == None:
@@ -367,11 +367,11 @@ def bad_query(results_box):
 def main():
     root = create_window()
 
-    db = get_FB_instance()
+    connector = get_FB_instance()
 
     configure_scrollbar_style()
 
-    create_widgets(root, db)
+    create_widgets(root, connector)
 
     root.mainloop()
 
