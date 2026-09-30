@@ -367,8 +367,7 @@ def bad_query(results_box):
 def main():
     root = create_window()
 
-    # db = get_FB_instance()
-    db = []
+    db = get_FB_instance()
 
     configure_scrollbar_style()
 
