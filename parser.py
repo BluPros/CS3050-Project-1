@@ -5,6 +5,20 @@ import pyparsing as pp
 from pyparsing import Keyword, Literal, Optional, Word, alphas, alphanums, pyparsing_common, ParseException, Group
 
 
+# The parser takes a string and returns a dictionary of strings with the following form:
+# {'condition1': {'field': (field), 'operator': (operator), 'value': (value)}, 'logic_op': None, 'condition2' : None}
+# if there is no second condition. and
+# {'condition1': {'field': (field), 'operator': (operator), 'value': (value)}, 'logic_op': (logic_op),
+# 'condition2': {'field': (field), 'operator': (operator), 'value': (value)}}
+# if there is a second condition.
+#
+# To use this result, do something along the lines of result["condition1"]["field"] or
+# ["condition1"]["operator"] or ["condition2"]["value"] to get their respective strings.
+#
+# Note: fields will be checked for viability (i.e. they have to be an actual field),
+#       but values are not. Something like "release_date=aaaaaa" will be considered valid.
+# Note: Everything is returned as strings. If the string "price=1.99" is parsed,
+#       ["condition1"]["value"] will be "1.99", not the float 1.99.
 def parse(query_string: str):
 
     and_op = Keyword("and")

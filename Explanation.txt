@@ -1,0 +1,16 @@
+    Valid fields: app_id, name, release_date, price, metacritic_url, categories, genres, tags
+    Valid operators: =, !=, <, >, <=, >=
+
+To search, use the following syntax:
+
+    (field)(operator)(value) will return all games that satisfy the condition
+    (field)(operator)(value) and (field)(operator)(value) will return all games that satisfy both conditions.
+    (field)(operator)(value) (field)(operator)(value) will do the same.
+    (field)(operator)(value) or (field)(operator)(value) will return all games that satisfy at least one condition.
+
+Examples queries:
+    price<9.99 will return all games that cost less than $9.99.
+    price<9.99 and release_date=2023-09-21 will return all games released on 9/21/23 that cost less than $9.99.
+    price<9.99 release_date=2023-09-21 will behave identically.
+    price<9.99 or release_date=2023-09-21 will return all games that either
+        were released on 9/21/23 or cost less than $9.99.
