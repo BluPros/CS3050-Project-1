@@ -255,7 +255,7 @@ def open_help_window(root):
     help_window = tk.Toplevel(root)
 
     help_window.title("Help")
-    help_window.geometry("500x300")
+    help_window.geometry("800x600")
 
     help_window.configure(bg=BG_COLOR)
 
@@ -272,7 +272,25 @@ def open_help_window(root):
     instructions = tk.Label(
         help_window,
         text=(
-            "QUERY LANGUAGE SYNTAX DESCRIPTION"
+            """Valid fields: app_id, name, release_date, price, metacritic_url, categories, genres, tags
+                    Valid operators: =, !=, <, >, <=, >=
+
+                To search, use the following syntax:
+
+                    (field)(operator)(value) will return all games that satisfy the condition
+                    (field)(operator)(value) and (field)(operator)(value) will return all games that satisfy both 
+                        conditions.
+                    (field)(operator)(value) (field)(operator)(value) will do the same.
+                    (field)(operator)(value) or (field)(operator)(value) will return all games that satisfy at least one 
+                        condition.
+
+                Examples queries:
+                    price<9.99 will return all games that cost less than $9.99.
+                    price<9.99 and release_date=2023-09-21 will return all games released on 9/21/23 that cost 
+                        less than $9.99.
+                    price<9.99 release_date=2023-09-21 will behave identically.
+                    price<9.99 or release_date=2023-09-21 will return all games that either
+                        were released on 9/21/23 or cost less than $9.99."""
         ),
         font=BODY_FONT,
         bg=BG_COLOR,
